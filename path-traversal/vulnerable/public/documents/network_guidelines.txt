@@ -1,0 +1,20 @@
+================================================================================
+INTERNAL NETWORK CONFIGURATION & TOPOLOGY GUIDELINES
+Permitted Demonstration Document (Classification: Internal Public)
+================================================================================
+
+Document Reference: NET-GL-2026-08
+Revision: 1.2
+
+1. Subnet Allocations:
+- DMZ & Reverse Proxy Subnet: 192.168.10.0/24
+- Application Server Subnet: 192.168.20.0/24
+- Database Subnet: 192.168.30.0/24 (Strict firewall isolation)
+
+2. Standard Ports:
+- HTTPS Web Traffic: Port 443 / Port 3000 (Lab)
+- MongoDB Cluster: Port 27017
+
+3. Security Operations Center (SOC):
+All endpoint requests, document downloads, and authentication events are logged
+for anomaly detection and tracing analysis.

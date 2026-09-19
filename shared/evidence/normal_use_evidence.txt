@@ -1,0 +1,54 @@
+================================================================================
+ISEC3004 ASSIGNMENT 1: NORMAL USE VERIFICATION
+Author: Aadhil Rizwan
+Date: 2026-09-19 17:49:44 UTC
+Host: http://127.0.0.1:3000
+================================================================================
+
+--- TEST 1: Health Endpoint Check ---
+HTTP Status: 200
+Response Body:
+{"status":"online","system":"ISEC3004 Vulnerable Baseline Portal","version":"1.0.0-vulnerable-baseline","leadDeveloper":"Aadhil (Vulnerable Application Development Lead)","vulnerabilitiesHosted":[{"name":"NoSQL Injection","endpoint":"POST /api/auth/login","vulnerableFile":"routes/auth.js:58"},{"name":"Path Traversal","endpoint":"GET /api/documents/view","vulnerableFile":"routes/documents.js:74"}],"timestamp":"2026-09-19T17:49:44.376Z"}
+
+--- TEST 2: Valid Authentication (alice_admin) ---
+Request: POST /api/auth/login
+HTTP Status: 200
+Response Body:
+{"status":"success","message":"Authentication successful.","data":{"userId":"6aa5a92e9b9e9e851d8260d1","username":"alice_admin","fullName":"Alice Sterling (System Administrator)","role":"Administrator","department":"Executive IT Security","token":"session_token_6aa5a92e9b9e9e851d8260d1_1789840184452"}}
+
+--- TEST 3: Invalid Authentication (Rejection) ---
+Request: POST /api/auth/login
+HTTP Status: 401
+Response Body:
+{"status":"fail","message":"Invalid username or password."}
+
+--- TEST 4: Valid Document Retrieval (audit_report_2026.txt) ---
+Request: GET /api/documents/view?file=audit_report_2026.txt
+HTTP Status: 200
+Document Preview:
+================================================================================
+ISEC3004 ENTERPRISE SECURITY AUDIT REPORT - 2026
+Permitted Demonstration Document (Classification: Internal Public)
+================================================================================
+
+
+--- TEST 5: Valid Document Retrieval (security_policy_v2.txt) ---
+Request: GET /api/documents/view?file=security_policy_v2.txt
+HTTP Status: 200
+Document Preview:
+================================================================================
+CORPORATE INFORMATION SECURITY POLICY (VERSION 2.4)
+Permitted Demonstration Document (Classification: Internal Public)
+================================================================================
+
+
+--- TEST 6: Non-Existent Document (404 Rejection) ---
+Request: GET /api/documents/view?file=missing_record_xyz.txt
+HTTP Status: 404
+Response Body:
+{"status":"fail","message":"Requested document not found."}
+
+================================================================================
+Normal use verification tests completed.
+Evidence written to: docs/evidence/normal_use_evidence.txt
+================================================================================
