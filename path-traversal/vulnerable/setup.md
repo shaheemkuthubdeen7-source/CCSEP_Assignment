@@ -57,11 +57,4 @@ curl http://localhost:3001/api/documents/view?file=audit_report_2026.txt
 ```
 *Expected Status:* `200 OK` (returns the harmless audit document).
 
-### B. Exploitation Test (For Kav)
-```bash
-curl "http://localhost:3001/api/documents/view?file=../../config/.env.secrets"
-```
-*Expected Result:* Escapes the document directory and outputs simulated production secrets and the assessment flag:
-```text
-APP_SECRET_KEY="ISEC3004{fl4g_d1r3ct0ry_tr4v3rs4l_succ3ss_demo}"
-```
+
