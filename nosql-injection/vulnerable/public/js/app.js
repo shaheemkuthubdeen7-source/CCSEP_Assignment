@@ -3,11 +3,6 @@
  * Author: Aadhil Rizwan
  */
 
-function fillCredentials(user, pass) {
-  document.getElementById('login-username').value = user;
-  document.getElementById('login-password').value = pass;
-}
-
 async function handleLogin(e) {
   e.preventDefault();
   const username = document.getElementById('login-username').value;
