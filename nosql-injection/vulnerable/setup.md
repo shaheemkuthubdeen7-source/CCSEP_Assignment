@@ -39,7 +39,6 @@ npm start
 ```
 
 The service will start on:
-```text
 http://localhost:3000
 ```
 
@@ -69,10 +68,10 @@ http://localhost:3000
 
 ### A. Legitimate Authentication (Normal Use)
 ```bash
+curl -X POST http://localhost:3001/api/auth/login \
 curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username": "alice_admin", "password": "AdminSecret#2026"}'
-```
 *Expected Status:* `200 OK` (returns authenticated user profile and session token).
 
 
