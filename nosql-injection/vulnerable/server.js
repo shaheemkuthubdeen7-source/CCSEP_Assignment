@@ -13,7 +13,6 @@ const { connectDB } = require('./config/db');
 
 // Route handlers
 const authRoutes = require('./routes/auth');
-const documentRoutes = require('./routes/documents');
 const User = require('./models/User');
 
 const app = express();
@@ -32,7 +31,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount API routes
 app.use('/api/auth', authRoutes);
-app.use('/api/documents', documentRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

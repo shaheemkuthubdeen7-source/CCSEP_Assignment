@@ -1,0 +1,11 @@
+{
+  "name": "nosql-injection",
+  "version": "1.0.0",
+  "description": "NoSQL Injection - root runner",
+  "scripts": {
+    "install:app": "npm install --prefix vulnerable",
+    "start": "npm install --prefix vulnerable && npm start --prefix vulnerable",
+    "seed": "npm run seed --prefix vulnerable",
+    "test:normal": "npm run test:normal --prefix vulnerable"
+  }
+}

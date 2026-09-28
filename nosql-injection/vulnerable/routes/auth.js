@@ -38,7 +38,7 @@ router.post('/login', async (req, res) => {
 
   try {
     // Insecure query filter: untrusted object input is not cast to string or sanitized.
-    // An attacker can pass query operator objects like { "$ne": "" } to evaluate to true.
+   
     const queryFilter = {
       username: username,
       password: password
