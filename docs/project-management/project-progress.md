@@ -26,6 +26,8 @@ Sachin
 
 20th September:
 
+# Progress update 20 September
+
 ## Completed this week
 
 Bilal
@@ -55,5 +57,24 @@ Sachin
 
 27th September:
 
+# Progress update 27 September
 
+## Completed this week
+
+Kavin
+- Completed exploit scripts for both NoSQL and Path traversal vulnerabilities
+
+Bilal
+- Created report document with initial formatting and structure
+
+## In progress
+- Sachin is in the process of producing the trace reports
+- Aadhil is completing his report section of the task allocation
+
+## Problems / blockers
+- No major blockers
+
+## Next Milestone
+
+1st October:
 
