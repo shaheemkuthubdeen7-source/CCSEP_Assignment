@@ -1,2 +1,0 @@
-# Mitigation Notes
-
