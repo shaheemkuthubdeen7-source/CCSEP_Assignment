@@ -54,7 +54,17 @@ http://localhost:3000
 
 ---
 
+
+
+
+
+
+
 ## 5. Verification Commands
+
+
+
+
 
 ### A. Legitimate Authentication (Normal Use)
 ```bash
@@ -64,15 +74,9 @@ curl -X POST http://localhost:3000/api/auth/login \
   -d '{"username": "alice_admin", "password": "AdminSecret#2026"}'
 *Expected Status:* `200 OK` (returns authenticated user profile and session token).
 
-### B. Exploitation Test (For Kav)
-```bash
-curl -X POST http://localhost:3000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username": "alice_admin", "password": {"$ne": ""}}'
-```
-*Expected Result:* Successfully logs in as `alice_admin` without knowing the password.
 
-### C. Automated Test Suite
+
+### B. Automated Test Suite
 ```bash
 bash scripts/verify_normal.sh
 ```
