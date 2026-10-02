@@ -13,9 +13,9 @@ http://localhost:3001
 
 Stop the vulnerable server.
 
-cd path-traversal/mitigated
-npm install
-npm start
+- cd path-traversal/mitigated
+- npm install
+- npm start
 
 Open:
 http://localhost:3001
