@@ -1,8 +1,8 @@
 /**
  * Application Entrypoint
- * Author: Aadhil Rizwan
+ * Original Author: Aadhil Rizwan
  * 
- * Sets up Express middleware, API routes, and database initialization.
+ * Sets up Express middleware and API routes for the security-enhanced Path Traversal demonstration application.
  */
 
 const express = require('express');

@@ -6,9 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "seed": "node scripts/seed.js",
-    "test:normal": "bash scripts/verify_normal.sh",
-    "test:secure": "bash scripts/verify_secure.sh"
+    "seed": "node scripts/seed.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
