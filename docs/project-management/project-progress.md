@@ -78,3 +78,23 @@ Bilal
 
 1st October:
 
+# Progress update 1 October
+
+## Completed this week
+
+Shaheem
+- Completed secure code implementation for NoSQL vulnerability
+- Completed secure code implementation for Path Traversal vulnerability
+
+Sachin
+- Completed tracing evidence for exploit scripts gathered by Kavin
+
+## In progress
+- All report work assigned to each member is being carried out and nearing completion
+- Kavins revised pull request is being awaited
+- pull request need to be merged into main after completing the QA checklist
+
+
+## Problems / blockers
+- No major blockers
+
