@@ -1,0 +1,16 @@
+{
+  "name": "isec3004-path-mitigated",
+  "version": "1.0.0",
+  "description": "ISEC3004 Group Security Project - Security-enhanced Path Traversal demonstration",
+  "author": "Shaheem (Mitigation Lead)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0"
+  }
+}
