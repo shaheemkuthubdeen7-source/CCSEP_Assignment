@@ -1,7 +1,7 @@
 {
-  "name": "isec3004-nosql-mitigated",
+  "name": "isec3004-path-mitigated",
   "version": "1.0.0",
-  "description": "ISEC3004 Group Security Project - Security-enhanced NoSQL Injection demonstration",
+  "description": "ISEC3004 Group Security Project - Security-enhanced Path Traversal demonstration",
   "author": "Shaheem (Mitigation Lead)",
   "main": "server.js",
   "scripts": {
@@ -10,12 +10,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mongoose": "^8.9.5",
     "morgan": "^1.10.0"
-  },
-  "devDependencies": {
-    "mongodb-memory-server": "^10.1.3"
   }
 }

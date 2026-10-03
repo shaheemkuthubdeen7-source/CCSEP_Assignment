@@ -2,9 +2,9 @@
 
 ## Vulnerable Version
 
-cd vulnerable
-npm install
-npm start
+- cd path-traversal/vulnerable
+- npm install
+- npm start
 
 Open:
 http://localhost:3001
@@ -13,9 +13,9 @@ http://localhost:3001
 
 Stop the vulnerable server.
 
-cd ../secure
-npm install
-npm start
+- cd path-traversal/mitigated
+- npm install
+- npm start
 
 Open:
 http://localhost:3001

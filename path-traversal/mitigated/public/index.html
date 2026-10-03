@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="logo-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Document Archive</span>
+          <span class="brand-subtitle">Browse and retrieve files</span>
+        </div>
+      </div>
+      <div class="nav-meta">
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="grid-two-col">
+
+      <!-- Document Selector -->
+      <div class="glass-card">
+        <div class="card-header">
+          <h2 class="card-title">Document Repository</h2>
+          <span class="badge badge-info">Compliance Archive</span>
+        </div>
+        <p class="card-subtitle">Browse and retrieve audit reports and policy documents.</p>
+
+        <div class="form-group">
+          <label class="form-label">Available Documents</label>
+          <div class="doc-list-group">
+            <button type="button" class="doc-file-btn" onclick="fetchDocument('audit_report_2026.txt')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              audit_report_2026.txt
+            </button>
+            <button type="button" class="doc-file-btn" onclick="fetchDocument('security_policy_v2.txt')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              security_policy_v2.txt
+            </button>
+            <button type="button" class="doc-file-btn" onclick="fetchDocument('network_guidelines.txt')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              network_guidelines.txt
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="custom-file-input" class="form-label">Request by filename</label>
+          <div class="input-with-action">
+            <input type="text" id="custom-file-input" class="form-input" placeholder="e.g. audit_report_2026.txt">
+            <button type="button" class="btn btn-secondary" onclick="fetchCustomDoc()">View</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document Viewer -->
+      <div class="glass-card">
+        <div class="card-header">
+          <h2 class="card-title">Document Viewer</h2>
+          <span id="doc-status-badge" class="badge badge-neutral">Standby</span>
+        </div>
+        <p class="card-subtitle" id="current-doc-name">No document selected.</p>
+
+        <div class="document-viewer-container">
+          <div class="viewer-header">
+            <span class="viewer-title">File contents</span>
+          </div>
+          <pre id="doc-content-display" class="viewer-body">Select a document from the left to view its contents.</pre>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <span>Document Archive</span>
+      <span>© 2026 All rights reserved</span>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

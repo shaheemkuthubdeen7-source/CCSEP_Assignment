@@ -2,9 +2,9 @@
 
 ## Vulnerable Version
 
-cd vulnerable
-npm install
-npm start
+- cd nosql-injection/vulnerable
+- npm install
+- npm start
 
 Open:
 http://localhost:3000
@@ -13,9 +13,9 @@ http://localhost:3000
 
 Stop the vulnerable server.
 
-cd ../secure
-npm install
-npm start
+- cd nosql-injection/mitigated
+- npm install
+- npm start
 
 Open:
 http://localhost:3000
