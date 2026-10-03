@@ -101,3 +101,136 @@ The trace shows evidance of vulnerable behaviour. Unlike the normal request, bot
 | Wrong password | string + string | normal values | `401 Unauthorized` | Authentication failed |
 | Targeted NoSQL Injection | string + object | `$ne` operator | `200 OK` | Successful authentication |
 | Full NoSQL Injection | object + object | `$ne` + `$gt` operators | `200 OK` | Successful authentication |
+
+
+## Mitigated NoSQL Injection Trace - Secure Build
+
+The NoSQL Injection tests were repeated against the secure authentication implementation using the same controlled operator-based inputs. Burp Suite was used to capture the HTTP request and response, while the application authentication logs provided the corresponding server-side trace.
+
+### Secure Normal Authentication Trace - MNSQL-01
+
+A normal login request continued to work in the secure implementation. The application log recorded:
+
+```text
+[AUTH-SECURE] [2026-10-03T03:27:28.659Z] Login attempt from IP: ::ffff:127.0.0.1
+[AUTH-SECURE] Input types: username=[string], password=[string]
+[AUTH-SECURE] Executing validated equality query for username: alice_admin
+[AUTH-SECURE] Login successful: alice_admin (Administrator)
+POST /api/auth/login HTTP/1.1" 200
+```
+
+Burp Suite recorded an `HTTP/1.1 200 OK` response for the valid credentials.
+
+This confirms that the secure implementation continued to support legitimate authentication while processing ordinary username and password values as strings.
+
+### Secure Wrong-Password Trace - MNSQL-02
+
+A normal incorrect-password request was also rejected:
+
+```text
+[AUTH-SECURE] [2026-10-03T03:28:23.474Z] Login attempt from IP: ::ffff:127.0.0.1
+[AUTH-SECURE] Input types: username=[string], password=[string]
+[AUTH-SECURE] Executing validated equality query for username: alice_admin
+[AUTH-SECURE] Login failed for user: alice_admin
+POST /api/auth/login HTTP/1.1" 401
+```
+
+Burp Suite recorded `HTTP/1.1 401 Unauthorized`.
+
+This provides a normal negative authentication trace for comparison with the rejected NoSQL operator inputs.
+
+### Mitigated Targeted NoSQL Injection Trace - MNSQL-03
+
+The targeted NoSQL Injection request used an object containing the `$ne` operator in the password field:
+
+```json
+{
+    "username": "alice_admin",
+    "password": {
+        "$ne": ""
+    }
+}
+```
+
+The secure application rejected the request. Burp Suite recorded:
+
+```text
+HTTP/1.1 400 Bad Request
+```
+
+with the response message:
+
+```json
+{
+  "status": "error",
+  "message": "Username and password must be valid strings."
+}
+```
+
+The corresponding server log recorded:
+
+```text
+[AUTH-SECURE] [2026-10-03T03:29:37.145Z] Login attempt from IP: ::ffff:127.0.0.1
+[AUTH-SECURE] Input types: username=[string], password=[object]
+[AUTH-SECURE] Rejected: invalid credential type or length.
+POST /api/auth/login HTTP/1.1" 400
+```
+
+The trace shows that the password was received as an object rather than a string. Instead of incorporating the supplied `$ne` operator into a database query, the secure implementation rejected the request during input validation and returned `400 Bad Request`.
+
+### Mitigated Full NoSQL Injection Trace - MNSQL-04
+
+The full NoSQL Injection request supplied operators in both authentication fields:
+
+```json
+{
+    "username": {
+        "$ne": ""
+    },
+    "password": {
+        "$gt": ""
+    }
+}
+```
+
+Burp Suite recorded:
+
+```text
+HTTP/1.1 400 Bad Request
+```
+
+with the same validation response:
+
+```json
+{
+  "status": "error",
+  "message": "Username and password must be valid strings."
+}
+```
+
+The corresponding server log recorded:
+
+```text
+[AUTH-SECURE] [2026-10-03T03:30:32.780Z] Login attempt from IP: ::ffff:127.0.0.1
+[AUTH-SECURE] Input types: username=[object], password=[object]
+[AUTH-SECURE] Rejected: invalid credential type or length.
+POST /api/auth/login HTTP/1.1" 400
+```
+
+Both fields were therefore identified as objects and the request was rejected before a validated equality query was executed.
+
+### Mitigated NoSQL Trace Comparison
+
+| Trace | Input structure | Secure handling | HTTP result | Application result |
+|---|---|---|---|---|
+| Normal login | string + string | Validated equality query | `200 OK` | Successful authentication |
+| Wrong password | string + string | Validated equality query | `401 Unauthorized` | Authentication failed |
+| Targeted NoSQL Injection | string + object | Input validation rejected object | `400 Bad Request` | Request rejected |
+| Full NoSQL Injection | object + object | Input validation rejected objects | `400 Bad Request` | Request rejected |
+
+
+### Overall Secure Trace Conclusion
+
+The mitigated NoSQL Injection tests show that the secure implementation no longer accepts structured operator values as username or password inputs. The targeted `$ne` request and the full `$ne`/`$gt` request both produced `400 Bad Request` responses, and the server logs recorded the invalid object input types and rejection decision.
+
+The normal authentication trace continued to return `200 OK`, while an ordinary incorrect password returned `401 Unauthorized`. This provides evidence that the observed mitigation specifically affects the abnormal structured inputs while normal authentication behaviour remains available.

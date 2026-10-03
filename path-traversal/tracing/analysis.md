@@ -151,3 +151,158 @@ This confirms that the same traversal behaviour occurred when the client request
 | PT-02 | `audit_report_2026.txt` | `false` | `public/documents/audit_report_2026.txt` | `200` | Legitimate document served |
 | PT-03 | `../../config/.env.secrets` | `true` | `config/.env.secrets` | `200` | Traversal target served |
 | PT-04 | `../../config/.env.secrets` | `true` | `config/.env.secrets` | `200` | Traversal target served as JSON |
+
+## Mitigated Path Traversal Trace - Secure Build
+
+The Path Traversal tests were repeated against the mitigated implementation using the same document-listing, legitimate document-read, and controlled traversal requests. Burp Suite was used to capture the HTTP traffic and the secure application logs provided the corresponding path-validation trace.
+
+### Secure Normal Document Listing - MPT-01
+
+The secure implementation continued to provide the normal document listing:
+
+```http
+GET /api/documents/list HTTP/1.1
+Host: localhost:3001
+User-Agent: curl/7.68.0
+Accept: */*
+```
+
+Burp Suite recorded:
+
+```text
+HTTP/1.1 200 OK
+```
+
+The response identified the permitted directory as `demo-files/` and returned the available demonstration documents.
+
+The server log recorded:
+
+```text
+[DOC-SECURE] [2026-10-03T03:43:47.128Z] Valid document request from IP: ::ffff:127.0.0.1
+```
+
+This confirms that the document service remained available in the secure implementation.
+
+### Secure Legitimate Document Access - MPT-02
+
+A legitimate document request was then made:
+
+```http
+GET /api/documents/view?file=audit_report_2026.txt HTTP/1.1
+Host: localhost:3001
+User-Agent: curl/7.68.0
+Accept: */*
+```
+
+Burp Suite recorded:
+
+```text
+HTTP/1.1 200 OK
+```
+
+and the contents of `audit_report_2026.txt` were returned.
+
+The corresponding secure application log recorded:
+
+```text
+[DOC-SECURE] File param: "audit_report_2026.txt" |
+Target: ".../mitigated/demo-files/audit_report_2026.txt" |
+Boundary check: PASS
+[DOC-SECURE] Served permitted file: ".../mitigated/demo-files/audit_report_2026.txt" (956 bytes)
+```
+
+The trace shows that the legitimate filename passed the boundary check and the permitted document was served successfully.
+
+### Mitigated Path Traversal Attack - MPT-03
+
+The same controlled traversal input used against the vulnerable implementation was tested against the secure implementation:
+
+```text
+../../config/.env.secrets
+```
+
+The Burp request was:
+
+```http
+GET /api/documents/view?file=../../config/.env.secrets HTTP/1.1
+Host: localhost:3001
+User-Agent: curl/7.68.0
+Accept: */*
+```
+
+This time, Burp Suite recorded:
+
+```text
+HTTP/1.1 403 Forbidden
+```
+
+with the response:
+
+```json
+{
+  "status": "fail",
+  "message": "Requested path is outside the permitted document directory."
+}
+```
+
+The secure server log recorded:
+
+```text
+[DOC-SECURE] [2026-10-03T03:45:39.598Z] Blocked path component from IP: ::ffff:127.0.0.1 | file="../../config/.env.secrets"
+GET /api/documents/view?file=../../config/.env.secrets HTTP/1.1" 403
+```
+
+The trace shows that the traversal input was detected and blocked. Unlike the vulnerable implementation, the requested restricted file was not served and the response was `403 Forbidden`.
+
+### Mitigated Path Traversal with JSON Accept Header - MPT-04
+
+The traversal request was repeated with the JSON `Accept` header:
+
+```http
+GET /api/documents/view?file=../../config/.env.secrets HTTP/1.1
+Host: localhost:3001
+User-Agent: curl/7.68.0
+Accept: application/json
+```
+
+Burp Suite again recorded:
+
+```text
+HTTP/1.1 403 Forbidden
+```
+
+with:
+
+```json
+{
+  "status": "fail",
+  "message": "Requested path is outside the permitted document directory."
+}
+```
+
+The corresponding secure server log recorded:
+
+```text
+[DOC-SECURE] [2026-10-03T03:47:20.512Z] Blocked path component from IP: ::ffff:127.0.0.1 | file="../../config/.env.secrets"
+GET /api/documents/view?file=../../config/.env.secrets HTTP/1.1" 403
+```
+
+The same traversal payload was therefore blocked when the client requested a JSON response.
+
+### Mitigated Path Traversal Trace Comparison
+
+| Trace | File parameter | Secure validation | HTTP result | Observed behaviour |
+|---|---|---|---|---|
+| PT-01 | N/A | Normal document listing | `200 OK` | Document list returned |
+| PT-02 | `audit_report_2026.txt` | Boundary check: `PASS` | `200 OK` | Permitted document served |
+| PT-03 | `../../config/.env.secrets` | Path blocked as outside permitted directory | `403 Forbidden` | Traversal request rejected |
+| PT-04 | `../../config/.env.secrets` + JSON header | Path blocked as outside permitted directory | `403 Forbidden` | Traversal request rejected |
+
+
+### Overall Secure Trace Conclusion
+
+The mitigated Path Traversal tests show that the secure implementation prevents the previously observed traversal behaviour. A legitimate document remained accessible and passed the boundary check, while both controlled traversal requests were blocked with `403 Forbidden`.
+
+The server-side logs provide matching evidence of the validation decision: legitimate access was recorded as `Boundary check: PASS`, while the traversal requests were recorded as `Blocked path component`. The resulting HTTP responses also changed from the vulnerable implementation's `200 OK` file disclosure to `403 Forbidden` rejection.
+
+This provides a direct trace of the mitigation from the original traversal input through path validation to the blocked response.
