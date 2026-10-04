@@ -98,3 +98,18 @@ Sachin
 ## Problems / blockers
 - No major blockers
 
+# Progress update 3 October
+
+## Completed this week
+
+
+Sachin
+- Completed tracing evidence for secure code developed by Shaheem
+
+## In progress
+- All report work assigned to each member is being carried out and nearing completion
+- Kavins revised pull request is being awaited after further revision
+
+
+## Problems / blockers
+- No major blockers
