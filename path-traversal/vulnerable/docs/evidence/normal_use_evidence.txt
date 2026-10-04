@@ -1,0 +1,46 @@
+================================================================================
+ISEC3004 ASSIGNMENT 1: NORMAL USE VERIFICATION
+Author: Aadhil Rizwan
+Date: 2026-10-02 17:23:53 UTC
+Host: http://127.0.0.1:3000
+================================================================================
+
+--- TEST 1: Health Endpoint Check ---
+HTTP Status: 200
+Response Body:
+{"status":"online","system":"ISEC3004 Security Lab Application","version":"1.0.0","developer":"Aadhil Rizwan","timestamp":"2026-10-02T17:23:53.456Z"}
+
+--- TEST 2: Valid Authentication (alice_admin) ---
+Request: POST /api/auth/login
+HTTP Status: 200
+Response Body:
+{"status":"success","message":"Authentication successful.","data":{"userId":"6aafa4b023c845af780663ea","username":"alice_admin","fullName":"Alice Sterling","role":"Administrator","department":"IT Security","token":"session_token_6aafa4b023c845af780663ea_1790961833501"}}
+
+--- TEST 3: Invalid Authentication (Rejection) ---
+Request: POST /api/auth/login
+HTTP Status: 401
+Response Body:
+{"status":"fail","message":"Invalid username or password."}
+
+--- TEST 4: Valid Document Retrieval (audit_report_2026.txt) ---
+Request: GET /api/documents/view?file=audit_report_2026.txt
+HTTP Status: 404
+Document Preview:
+{"status":"error","message":"Resource not found: GET /api/documents/view?file=audit_report_2026.txt"}
+
+--- TEST 5: Valid Document Retrieval (security_policy_v2.txt) ---
+Request: GET /api/documents/view?file=security_policy_v2.txt
+HTTP Status: 404
+Document Preview:
+{"status":"error","message":"Resource not found: GET /api/documents/view?file=security_policy_v2.txt"}
+
+--- TEST 6: Non-Existent Document (404 Rejection) ---
+Request: GET /api/documents/view?file=missing_record_xyz.txt
+HTTP Status: 404
+Response Body:
+{"status":"error","message":"Resource not found: GET /api/documents/view?file=missing_record_xyz.txt"}
+
+================================================================================
+Normal use verification tests completed.
+Evidence written to: docs/evidence/normal_use_evidence.txt
+================================================================================
