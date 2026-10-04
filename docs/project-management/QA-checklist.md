@@ -47,3 +47,21 @@
 | Code Review | Secure changes match intended mitigation | **Passed** | The implemented changes matched the intended NoSQL injection and path traversal mitigations. |
 | Evidence | Screenshots/logs confirm secure behavior | **Passed** | The captured screenshots and server/request logs confirm secure behavior. |
 | Sign-off | Ready for integration? | **Passed** | Branch can be merged successfully |
+
+
+## 4. Trace Analysis Sign-off (Sachin)
+- **Author:** Sachin Senaratne (Trace Analysis / Telemetry Lead)
+- **Reviewer:** Kavin (Exploitation Lead)
+
+| Check Item | Criteria | Result | Notes |
+| :--- | :--- | :---: | :--- |
+| **Source Correlation** | Burp request/response captures correlated with application server logs | Pass | Timestamp, endpoint, and file/credential parameters link each Burp request to its server-side log event across both NoSQL and Path Traversal traces |
+| **Baseline Established** | Normal and negative traces captured before attack traces | Pass | NoSQL: NSQL-01 (`200`) and NSQL-02 (`401`). Path Traversal: PT-01 (listing) and PT-02 (legitimate file, `Traversal flag: false`) |
+| **NoSQL Vulnerable Evidence** | Injection traces show object input, operator in query, auth success | Pass | NSQL-03 (`$ne`) and NSQL-04 (`$ne`/`$gt`) show object input types carried into the executed query, returning `200 OK` |
+| **Path Traversal Vulnerable Evidence** | Traversal traces show `Traversal flag: true` and out-of-directory file served | Pass | PT-03 and PT-04 both resolve `../../config/.env.secrets` outside `public/documents/` and serve it with `200 OK`, including the JSON-header variant |
+| **NoSQL Mitigated Evidence** | Secure build rejects object inputs before query construction | Pass | MNSQL-03 and MNSQL-04 return `400 Bad Request` with a "Rejected: invalid credential type" log line |
+| **Path Traversal Mitigated Evidence** | Secure build blocks out-of-directory paths | Pass | MPT-03 and MPT-04 return `403 Forbidden` with "Blocked path component"; MPT-02 shows legitimate access still passes `Boundary check: PASS` |
+| **Request-to-Log Linkage** | Every trace carries a timestamp tying the capture to a log entry | Conditional | Mixed formats: NoSQL vulnerable uses clock time (`12:09:36`), mitigated and Path Traversal use ISO-8601, and NSQL-01/02 have no explicit timestamp — normalise and backfill the two baseline traces |
+| **Comparison Clarity** | Before/after behaviour summarised in readable comparison tables | Pass | Four comparison tables (vulnerable + mitigated, for each vulnerability) contrast input, validation handling, and HTTP result |
+| **Scope Coverage** | Trace analysis covers all vulnerabilities in the project | Pass | Both in-scope vulnerabilities (NoSQL Injection and Path Traversal) now have full vulnerable and mitigated trace analysis |
+| **Sign-off** | Ready for integration / final reporting? | Conditional | Normalise timestamp formats, backfill NSQL-01/02 timestamps, and fix the typos before final sign-off |
