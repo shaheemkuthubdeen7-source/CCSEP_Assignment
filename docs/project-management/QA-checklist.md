@@ -49,8 +49,9 @@
 | Sign-off | Ready for integration? | **Passed** | Branch can be merged successfully |
 
 
+
 ## 4. Trace Analysis Sign-off (Sachin)
-- **Author:** Sachin Senaratne (Trace Analysis / Telemetry Lead)
+- **Author:** Sachin Senaratne (Detection and Tracing Lead)
 - **Reviewer:** Kavin (Exploitation Lead)
 
 | Check Item | Criteria | Result | Notes |
@@ -61,7 +62,7 @@
 | **Path Traversal Vulnerable Evidence** | Traversal traces show `Traversal flag: true` and out-of-directory file served | Pass | PT-03 and PT-04 both resolve `../../config/.env.secrets` outside `public/documents/` and serve it with `200 OK`, including the JSON-header variant |
 | **NoSQL Mitigated Evidence** | Secure build rejects object inputs before query construction | Pass | MNSQL-03 and MNSQL-04 return `400 Bad Request` with a "Rejected: invalid credential type" log line |
 | **Path Traversal Mitigated Evidence** | Secure build blocks out-of-directory paths | Pass | MPT-03 and MPT-04 return `403 Forbidden` with "Blocked path component"; MPT-02 shows legitimate access still passes `Boundary check: PASS` |
-| **Request-to-Log Linkage** | Every trace carries a timestamp tying the capture to a log entry | Conditional | Mixed formats: NoSQL vulnerable uses clock time (`12:09:36`), mitigated and Path Traversal use ISO-8601, and NSQL-01/02 have no explicit timestamp — normalise and backfill the two baseline traces |
+| **Request-to-Log Linkage** | Every trace carries a timestamp tying the capture to a log entry | Pass | All traces are timestamped in the raw logs (NoSQL vulnerable run 27 Sep 2026, mitigated run 03 Oct 2026, both UTC). Editorial note: quote one timestamp format throughout — the write-up mixes the ISO-8601 stamp (`2026-09-27T12:09:36Z`) and the Apache request stamp (`27/Sep/2026:12:09:36`) from the same log line |
 | **Comparison Clarity** | Before/after behaviour summarised in readable comparison tables | Pass | Four comparison tables (vulnerable + mitigated, for each vulnerability) contrast input, validation handling, and HTTP result |
 | **Scope Coverage** | Trace analysis covers all vulnerabilities in the project | Pass | Both in-scope vulnerabilities (NoSQL Injection and Path Traversal) now have full vulnerable and mitigated trace analysis |
-| **Sign-off** | Ready for integration / final reporting? | Conditional | Normalise timestamp formats, backfill NSQL-01/02 timestamps, and fix the typos before final sign-off |
+| **Sign-off** | Ready for integration / final reporting? | Pass | Evidence complete for both vulnerabilities. Remaining items are editorial: normalise the quoted timestamp format, note the 6-day gap between the exploit and mitigation runs, and fix the typos |
