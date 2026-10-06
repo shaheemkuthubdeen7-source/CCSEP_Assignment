@@ -113,3 +113,23 @@ Sachin
 
 ## Problems / blockers
 - No major blockers
+
+
+# Progress update 5 October
+
+## Completed this week
+Shaheem
+- Completed report writing section
+
+Aadhil
+- Completed report writing section
+
+Sachin
+- Completed Report writing section
+
+## In progress
+- Kavin and Bilal are nearing completion of their report contributions and their status will be updated in the next milestone progress report
+
+
+## Problems / blockers
+- No major blockers
