@@ -133,3 +133,19 @@ Sachin
 
 ## Problems / blockers
 - No major blockers
+
+# Progress update 8 October
+
+## Completed this week
+Bilal
+- Completed report writing section 
+
+Kavin
+- Completed report writing section
+
+## In progress
+- Final proofreading and changes are being made to the final report 
+
+
+## Problems / blockers
+- No major blockers
